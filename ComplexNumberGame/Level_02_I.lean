@@ -25,7 +25,7 @@ tactics in the `by` block.
 namespace Complex
 
 /-- Complex.I is the square root of -1 above the imaginary axis -/
-def I : ℂ := sorry
+def I : ℂ := Complex.mk 0 1
 
 /-
 
@@ -36,20 +36,29 @@ def I : ℂ := sorry
 
 /-- re(I) = 0 -/
 @[simp] lemma I_re : re I = 0 := by
-  sorry
+  rfl
 
 /-- im(I) = 1 -/
 @[simp] lemma I_im : im I = 1 := by
-  sorry
+  rfl
 
 /-- I*I = -1 -/
 @[simp] lemma I_mul_I : I * I = -1 := by
-  sorry
+  ext
+  rw[mul_re]
+  simp
+  rw[mul_im]
+  simp
 
-lemma mk_eq_add_mul_I (a b : ℝ) : (⟨a, b⟩ : ℂ) = a + b * I := sorry
+lemma mk_eq_add_mul_I (a b : ℝ) : (⟨a, b⟩ : ℂ) = a + b * I := by
+  ext
+  simp
+  simp
 
-@[simp] lemma re_add_im (z : ℂ) : (z.re : ℂ) + z.im * I = z := sorry
-
+@[simp] lemma re_add_im (z : ℂ) : (z.re : ℂ) + z.im * I = z := by
+  ext
+  simp
+  simp
 
 /-
   Bonus level. Hint: don't forget ext_iff. It's defined
@@ -60,6 +69,10 @@ lemma mk_eq_add_mul_I (a b : ℝ) : (⟨a, b⟩ : ℂ) = a + b * I := sorry
 
 /-- I is non-zero -/
 lemma I_ne_zero : (I : ℂ) ≠ 0 := by
-  sorry
+  intro h
+  rw [ext_iff] at h
+  rcases h with ⟨hre, him⟩
+  rw [I_im] at him
+  simp at him
 
 end Complex
